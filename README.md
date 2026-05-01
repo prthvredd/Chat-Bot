@@ -93,6 +93,26 @@ Allowed levels:
 .\mvnw.cmd test
 ```
 
+## Docker
+
+Build the image:
+
+```powershell
+docker build -t smartnotes-ai .
+```
+
+Run the container:
+
+```powershell
+docker run --env-file .env -p 8080:8080 smartnotes-ai
+```
+
+Then open:
+
+```text
+http://localhost:8080
+```
+
 ## Notes
 
 - CSRF is disabled for easier local API testing.
