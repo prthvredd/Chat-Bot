@@ -4,4 +4,5 @@ import lombok.Data;
 
 public class ChatRequest {
     private String message;
+    private String level;
 }

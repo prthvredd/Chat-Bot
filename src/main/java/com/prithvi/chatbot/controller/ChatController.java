@@ -15,12 +15,12 @@ public class ChatController {
     }
     @PostMapping
     public ChatResponse chat(@RequestBody ChatRequest request) {
-        String reply = chatService.getReply(request.getMessage());
+        String reply = chatService.getReply(request.getMessage(), request.getLevel());
         return new ChatResponse(reply);
     }
     @PostMapping("/summarize") //apis right here baby :))
     public ChatResponse summarize(@RequestBody ChatRequest request) {
-        String summary = chatService.summarize(request.getMessage());
+        String summary = chatService.summarize(request.getMessage(), request.getLevel());
         return new ChatResponse(summary);
     }
 

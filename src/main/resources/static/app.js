@@ -7,6 +7,7 @@ const clearBtn = document.querySelector("#clearBtn");
 const copyBtn = document.querySelector("#copyBtn");
 const tabs = document.querySelectorAll(".tab");
 const inputLabel = document.querySelector("#inputLabel");
+const levelSelect = document.querySelector("#level");
 
 let mode = "chat";
 
@@ -31,7 +32,10 @@ async function sendMessage(message) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message }),
+        body: JSON.stringify({
+            message,
+            level: levelSelect.value,
+        }),
     });
 
     if (!response.ok) {
@@ -55,7 +59,7 @@ form.addEventListener("submit", async (event) => {
 
     sendBtn.disabled = true;
     setStatus("Thinking");
-    responseBox.textContent = "";
+    responseBox.textContent = "Thinking...";
 
     try {
         const data = await sendMessage(message);

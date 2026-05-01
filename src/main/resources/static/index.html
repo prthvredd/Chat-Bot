@@ -23,6 +23,16 @@
         </div>
 
         <form id="chatForm" class="composer">
+            <div class="field-row">
+                <div class="field">
+                    <label for="level">Difficulty</label>
+                    <select id="level" name="level">
+                        <option value="beginner">Beginner</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+            </div>
             <label for="message" id="inputLabel">Message</label>
             <textarea id="message" name="message" rows="9" placeholder="Type your question or paste notes here..." required></textarea>
             <div class="actions">

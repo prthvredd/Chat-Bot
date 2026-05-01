@@ -8,16 +8,29 @@ public class ChatService {
     public ChatService(GrokService grokService){
         this.grokService = grokService; //connect the grokservice to chatservice
     }
-    public String getReply(String message){
+    public String getReply(String message, String level){
         String prompt = "You are a SmartNotes AI assistant. " +
+                "Explain at a " + normalizeLevel(level) + " level. " +
                 "Summarize or explain clearly in simple terms:\n\n"
                 + message;
         return grokService.callGrok(prompt);
     }
-    public String summarize(String text) {
-        String prompt = "Summarize this following text in a easy understable way" + text;
+    public String summarize(String text, String level) {
+        String prompt = "Summarize the following text at a " + normalizeLevel(level) +
+                " level. Keep it clear and easy to understand:\n\n" + text;
         return grokService.callGrok(prompt);
 
     }
 
+    private String normalizeLevel(String level) {
+        if (level == null) {
+            return "beginner";
+        }
+
+        return switch (level.toLowerCase()) {
+            case "intermediate" -> "intermediate";
+            case "advanced" -> "advanced";
+            default -> "beginner";
+        };
+    }
 }
