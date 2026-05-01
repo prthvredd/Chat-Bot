@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SmartNotes AI</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="shell">
+    <section class="workspace" aria-label="SmartNotes AI">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">SmartNotes AI</p>
+                <h1>Ask or summarize notes</h1>
+            </div>
+            <div class="status" id="status">Ready</div>
+        </header>
+
+        <div class="mode-tabs" role="tablist" aria-label="Mode">
+            <button class="tab active" type="button" data-mode="chat">Chat</button>
+            <button class="tab" type="button" data-mode="summarize">Summarize</button>
+        </div>
+
+        <form id="chatForm" class="composer">
+            <label for="message" id="inputLabel">Message</label>
+            <textarea id="message" name="message" rows="9" placeholder="Type your question or paste notes here..." required></textarea>
+            <div class="actions">
+                <button class="secondary" id="clearBtn" type="button">Clear</button>
+                <button class="primary" id="sendBtn" type="submit">Send</button>
+            </div>
+        </form>
+
+        <section class="response-panel" aria-live="polite">
+            <div class="response-header">
+                <h2>Response</h2>
+                <button class="copy-btn" id="copyBtn" type="button">Copy</button>
+            </div>
+            <div class="response" id="response">Your AI response will appear here.</div>
+        </section>
+    </section>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+  application:
+    name: chatbot
+server:
+  port: 8080
+grok:
+  api:
+    key: ${GROQ_API_KEY:}
