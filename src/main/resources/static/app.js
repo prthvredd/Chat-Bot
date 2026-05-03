@@ -21,27 +21,31 @@ function setMode(nextMode) {
     tabs.forEach((tab) => {
         tab.classList.toggle("active", tab.dataset.mode === mode);
     });
-    inputLabel.textContent = mode === "summarize" ? "Text to summarize" : "Message";
-    sendBtn.textContent = mode === "summarize" ? "Summarize" : "Send";
+
+    if (mode === "summarize") {
+        inputLabel.textContent = "Text to summarize";
+        sendBtn.textContent = "Summarize";
+        messageInput.placeholder = "Paste your notes here...";
+    } else if (mode === "ppt") {
+        inputLabel.textContent = "PPT Topic";
+        sendBtn.textContent = "Generate PPT";
+        messageInput.placeholder = "e.g. Introduction to Machine Learning";
+    } else {
+        inputLabel.textContent = "Message";
+        sendBtn.textContent = "Send";
+        messageInput.placeholder = "Type your question or paste notes here...";
+    }
 }
 
 async function sendMessage(message) {
     const endpoint = mode === "summarize" ? "/api/chat/summarize" : "/api/chat";
     const response = await fetch(endpoint, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            message,
-            level: levelSelect.value,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, level: levelSelect.value }),
     });
 
-    if (!response.ok) {
-        throw new Error(`Request failed with ${response.status}`);
-    }
-
+    if (!response.ok) throw new Error(`Request failed with ${response.status}`);
     return response.json();
 }
 
@@ -51,16 +55,47 @@ tabs.forEach((tab) => {
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
-
     const message = messageInput.value.trim();
-    if (!message) {
-        return;
-    }
+    if (!message) return;
 
     sendBtn.disabled = true;
     setStatus("Thinking");
     responseBox.textContent = "Thinking...";
 
+    // PPT mode
+    if (mode === "ppt") {
+        try {
+            const response = await fetch('/api/chat/generate-ppt', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message, level: levelSelect.value })
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText);
+            }
+
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = message + '.pptx';
+            a.click();
+            URL.revokeObjectURL(url);
+
+            responseBox.textContent = '✅ PPT for "' + message + '" downloaded successfully!';
+            setStatus("Ready");
+        } catch (error) {
+            responseBox.textContent = '❌ ' + error.message;
+            setStatus("Error", true);
+        } finally {
+            sendBtn.disabled = false;
+        }
+        return;
+    }
+
+    // Chat / Summarize mode
     try {
         const data = await sendMessage(message);
         responseBox.textContent = data.reply || "No response returned.";
@@ -82,9 +117,7 @@ clearBtn.addEventListener("click", () => {
 
 copyBtn.addEventListener("click", async () => {
     const text = responseBox.textContent.trim();
-    if (!text || text === "Your AI response will appear here.") {
-        return;
-    }
+    if (!text || text === "Your AI response will appear here.") return;
 
     await navigator.clipboard.writeText(text);
     setStatus("Copied");

@@ -56,8 +56,7 @@ textarea {
     text-transform: uppercase;
 }
 
-h1,
-h2 {
+h1, h2 {
     margin: 0;
 }
 
@@ -85,11 +84,12 @@ h2 {
     color: var(--danger);
 }
 
+/* 3 tabs now */
 .mode-tabs {
     display: inline-grid;
-    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    grid-template-columns: repeat(3, minmax(140px, 1fr));
     gap: 4px;
-    width: min(380px, 100%);
+    width: min(520px, 100%);
     padding: 4px;
     border: 1px solid var(--line);
     border-radius: 8px;
@@ -254,5 +254,10 @@ textarea:focus {
 
     .status {
         text-align: left;
+    }
+
+    .mode-tabs {
+        width: 100%;
+        grid-template-columns: repeat(3, 1fr);
     }
 }

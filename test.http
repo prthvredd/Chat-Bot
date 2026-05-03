@@ -1,6 +1,7 @@
-POST http://localhost:8085/api/chat
+POST http://localhost:8080/api/chat/generate-ppt
 Content-Type: application/json
 
 {
-  "message": "Explain Java in simple terms"
+  "message": "Introduction to Machine Learning",
+  "level": "beginner"
 }
